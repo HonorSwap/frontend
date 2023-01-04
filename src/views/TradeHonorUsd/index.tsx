@@ -134,7 +134,7 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
         <CardHeader>
         <div>Buy or Sell HNRUSD with BUSD All Time BUSD = HNRUSD</div>
         <div style={{marginTop:'10px'}}>Fee : %0.05</div>
-        <div style={{marginTop:'10px'}}>BUSD Stock : 45.000$</div>
+        <div style={{marginTop:'10px'}}>BUSD Stock : {busdBalance?.toFixed(2)}$</div>
         </CardHeader>
         </Card>
   <Flex padding="1" margin="1" flexDirection="row" justifyContent="space-between">
