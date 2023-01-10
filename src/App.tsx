@@ -18,6 +18,7 @@ import history from './routerHistory'
 // Views included in the main bundle
 import TradeHonorUsd from './views/TradeHonorUsd'
 import FinanceBUSD from './views/FinanceBUSD'
+import FinanceHNRUSD from './views/Finance/FinanceHNRUSD'
 import Pools from './views/Pools'
 import Swap from './views/Swap'
 import LotteryHNRUSD from './views/LotteryHNRUSD';
@@ -136,6 +137,7 @@ const App: React.FC = () => {
             <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
             <Route exact strict path="/tradehnrusd" component={TradeHonorUsd} />
             <Route exact strict path="/financebusd" component={FinanceBUSD} />
+            <Route exact strict path="/financehnrusd" component={FinanceHNRUSD} />
             <Route exact strict path="/lotteryhnrusd" component={LotteryHNRUSD} />
             {/* Redirect */}
             <Route path="/pool">

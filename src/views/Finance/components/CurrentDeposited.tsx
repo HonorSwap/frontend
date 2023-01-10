@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 
-import { Alert, ArrowDownIcon, Box, Button, Card, CardBody, CardHeader } from "@pancakeswap/uikit";
+import { Alert, ArrowDownIcon, Box, Button, Card, CardBody, CardHeader, Table, Td, Th } from "@pancakeswap/uikit";
 import CurrencyInputPanel from "components/CurrencyInputPanel";
 import { AutoColumn, ColumnCenter } from "components/Layout/Column";
 import Row from 'components/Layout/Row';
@@ -20,11 +20,14 @@ export default function CurrentDeposited (props) {
             <b>Current Deposited</b>
         </CardHeader>
         <CardBody>
-            
-            <Row>
-                Balance
-            </Row>
-            <Row>1000</Row>
+          <Table>
+          <Th>Start Balance</Th><Td>10.000</Td>
+          <Th>Start Date</Th><Td>01.11.2022</Td>
+          </Table>
+          <Table>
+          <Th>End Balance</Th><Td>12.000</Td>
+          <Th>End Date</Th><Td>01.11.2023</Td>
+          </Table>
         </CardBody>
       </Card>
     )
