@@ -19,6 +19,8 @@ import tokens, {testnetTokens} from '../../config/constants/tokens'
 
 import financeAbi from '../../config/abi/financeHnrUsd.json'
 import DepositCard from './DepositCard'
+import DepositCaption from "../Finance/components/DepositCaption";
+import CurrentDeposited from "../Finance/components/CurrentDeposited";
 
 
 
@@ -45,11 +47,6 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
 
 
   const busdBalance=useCurrencyBalance(account,busdToken);
-
-
- 
- 
-
  const busdBEP20=useERC20(busdToken.address);
 
  const financeBUSDAddress="0x8502dC7D2EF0Ee091A3AFeD14B1c418608F4f07a";
@@ -106,16 +103,9 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
   },[account,financeBUSD])
   return (
     <Page>
-      <Card style={{width:'100%', marginRight:'5px'}} >
-        <CardHeader>
-        <div>Deposit BUSD and get fixed interest</div>
-        <div style={{marginTop:'10px'}}>No Fee</div>
-        <div style={{marginTop:'10px'}}>1 Month  : %12 APY</div>
-        <div style={{marginTop:'10px'}}>3 Months : %14 APY</div>
-        <div style={{marginTop:'10px'}}>6 Months : %14 APY</div>
-        <div style={{marginTop:'10px'}}>1 Year   : %18 APY</div>
-        </CardHeader>
-        </Card>
+        <CurrentDeposited />
+        <DepositCaption tokenName="BUSD" month="12" month3="14" month6="16" year="18"/>
+        
     <Flex padding="1" margin="1" flexDirection="row" justifyContent="space-between">
     <DepositCard
     caption="1 Month (%12 APY)"
