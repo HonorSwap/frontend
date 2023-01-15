@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap/uikit'
+import { Flex } from '@honorswap/uiswap'
 import PrizesText from './PrizesText'
 import PrizesCard from './PrizesCard'
 

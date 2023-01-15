@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { Flex , Text ,Slider, Card, CardHeader,CardRibbon} from '@pancakeswap/uikit'
+import { Flex , Text ,Slider, Card, CardHeader,CardRibbon} from '@honorswap/uiswap'
 
 const FinanceInfo = () => {
 

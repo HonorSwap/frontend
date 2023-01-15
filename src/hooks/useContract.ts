@@ -23,6 +23,8 @@ import {
   getLotteryV2Contract,
   getBunnySpecialCakeVaultContract,
   getBunnySpecialPredictionContract,
+  getFinanceHonorContract,
+  getTradeHNRUSDContract,
 
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
@@ -156,7 +158,15 @@ export const useSpecialBunnyPredictionContract = () => {
   return useMemo(() => getBunnySpecialPredictionContract(library.getSigner()), [library])
 }
 
+export const useFinanceHonorContract = () => {
+  const {library} = useActiveWeb3React();
+  return useMemo( () => getFinanceHonorContract(library.getSigner()),[library] );
+}
 
+export const useTradeHNRUSDContract = () => {
+  const {library} = useActiveWeb3React();
+  return useMemo( () => getTradeHNRUSDContract(library.getSigner()),[library]);
+}
 
 
 

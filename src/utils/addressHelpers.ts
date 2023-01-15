@@ -56,5 +56,10 @@ export const getBunnySpecialPredictionAddress = () => {
   return getAddress(addresses.bunnySpecialPrediction)
 }
 
+export const getFinanceHonorAddress = () => {
+  return getAddress(addresses.financeHonor);
+}
 
-
+export const getTradeHNRUSDAddress = () => {
+  return getAddress(addresses.tradeHNRUSD);
+}

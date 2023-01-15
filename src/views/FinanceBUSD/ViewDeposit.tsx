@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { ArrowDownIcon, Box, Button, Card, CardBody, CardHeader } from "@pancakeswap/uikit";
+import { ArrowDownIcon, Box, Button, Card, CardBody, CardHeader } from "@honorswap/uiswap";
 import CurrencyInputPanel from "components/CurrencyInputPanel";
 import { AutoColumn, ColumnCenter } from "components/Layout/Column";
 import {testnetTokens} from '../../config/constants/tokens'

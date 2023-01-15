@@ -1,5 +1,5 @@
 import { Currency, ETHER, Token } from '@honorswap/sdk'
-import { BinanceIcon } from '@pancakeswap/uikit'
+import { BinanceIcon } from '@honorswap/uiswap'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import useHttpLocations from '../../hooks/useHttpLocations'

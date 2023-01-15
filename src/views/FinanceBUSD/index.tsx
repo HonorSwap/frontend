@@ -12,8 +12,8 @@ import { useTranslation } from 'contexts/Localization'
 import { AppBody, AppHeader } from 'components/App'
 import { AutoColumn, ColumnCenter } from 'components/Layout/Column'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import { CurrencyAmount, JSBI, Token, Trade } from '@honorswap/sdk'
-import { Button, Text, ArrowDownIcon, Box, useModal,Flex, AddIcon, Card, CardBody, CardHeader } from '@pancakeswap/uikit'
+import { Currency, CurrencyAmount, JSBI, Token, Trade } from '@honorswap/sdk'
+import { Button, Text, ArrowDownIcon, Box, useModal,Flex, AddIcon, Card, CardBody, CardHeader } from '@honorswap/uiswap'
 import  Page  from '../../components/Layout/Page'
 import tokens, {testnetTokens} from '../../config/constants/tokens'
 
@@ -21,6 +21,7 @@ import financeAbi from '../../config/abi/financeHnrUsd.json'
 import DepositCard from './DepositCard'
 import DepositCaption from "../Finance/components/DepositCaption";
 import CurrentDeposited from "../Finance/components/CurrentDeposited";
+
 
 
 
@@ -57,6 +58,8 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
     const busdValue =ethers.utils.parseEther(value);
     financeBUSD.deposit(busdValue,"")
   }
+   
+
  useEffect(()=>{
     const checkApproval= async () => {
       

@@ -23,7 +23,8 @@ import {
   getMulticallAddress,
   getBunnySpecialCakeVaultAddress,
   getBunnySpecialPredictionAddress,
-
+  getFinanceHonorAddress,
+  getTradeHNRUSDAddress,
 
 } from 'utils/addressHelpers'
 
@@ -53,6 +54,8 @@ import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import bunnySpecialCakeVaultAbi from 'config/abi/bunnySpecialCakeVault.json'
 import bunnySpecialPredictionAbi from 'config/abi/bunnySpecialPrediction.json'
+import financeHonorAbi from 'config/abi/financeHonor.json'
+import tradeHNRUSDAbi from 'config/abi/tradeHNRUSD.json'
 
 import { ChainLinkOracleContract, FarmAuctionContract, PancakeProfileContract, PredictionsContract } from './types'
 
@@ -138,6 +141,15 @@ export const getBunnySpecialCakeVaultContract = (signer?: ethers.Signer | ethers
 export const getBunnySpecialPredictionContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(bunnySpecialPredictionAbi, getBunnySpecialPredictionAddress(), signer)
 }
+
+export const getFinanceHonorContract = (signer? : ethers.Signer | ethers.providers.Provider) => {
+  return getContract(financeHonorAbi,getFinanceHonorAddress(), signer);
+}
+
+export const getTradeHNRUSDContract = (signer? : ethers.Signer | ethers.providers.Provider) => {
+  return getContract(tradeHNRUSDAbi,getTradeHNRUSDAddress(), signer);
+}
+
 
 
 

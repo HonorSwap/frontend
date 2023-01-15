@@ -1,10 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useApproveCallback } from 'hooks/useApproveCallback'
 import styled from 'styled-components'
+
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useTokenAllowance from 'hooks/useTokenAllowance'
+
 import { getContract } from 'utils'
 import { ethers } from 'ethers'
 import { MaxUint256 } from '@ethersproject/constants'
-import { useERC20 } from 'hooks/useContract'
+import { useERC20, useTradeHNRUSDContract } from 'hooks/useContract'
 import BigNumber from 'bignumber.js'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { RouteComponentProps } from 'react-router-dom'
@@ -12,12 +16,14 @@ import { useTranslation } from 'contexts/Localization'
 import { AppBody, AppHeader } from 'components/App'
 import { AutoColumn, ColumnCenter } from 'components/Layout/Column'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import { CurrencyAmount, JSBI, Token, Trade } from '@honorswap/sdk'
-import { Button, Text, ArrowDownIcon, Box, useModal,Flex, AddIcon, Card, CardBody, CardHeader } from '@pancakeswap/uikit'
+import { CurrencyAmount, JSBI, Token, TokenAmount, Trade } from '@honorswap/sdk'
+import { Button, Text, ArrowDownIcon, Box, useModal,Flex, AddIcon, Card, CardBody, CardHeader } from '@honorswap/uiswap'
 import  Page  from '../../components/Layout/Page'
 import tokens, {testnetTokens} from '../../config/constants/tokens'
 import FinanceInfo from  '../../components/Finance/FinanceInfo'
 import financeAbi from '../../config/abi/financeHnrUsd.json'
+
+
 
 
 
@@ -42,15 +48,22 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
   const [balanceBUSD,setBalanceBUSD]=useState<BigNumber>(undefined);
   const { account,library } = useActiveWeb3React()
 
+  const tradeHNRUSD=useTradeHNRUSDContract();
+
   const { t } = useTranslation()
+
+  const busdToken=testnetTokens.busd;
+  const hnrusdToken=testnetTokens.hnrusd;
+
+  const allowanceBUSD=useTokenAllowance(busdToken,account,tradeHNRUSD.address);
+  const allowanceHNRUSD=useTokenAllowance(hnrusdToken,account,tradeHNRUSD.address);
 
   const [husdBuyValue,sethusdBuyValue] = useState<string>('');
   const [busdSellValue,setbusdSellValue] = useState<string>('');
   const [husdSellValue,sethusdSellValue] = useState<string>('');
   const [busdBuyValue,setbusdBuyValue] = useState<string>('');
 
-  const busdToken=testnetTokens.busd;
-  const hnrusdToken=testnetTokens.hnrusd;
+  
 
   const busdBalance=useCurrencyBalance(account,busdToken);
   const hnrusdBalance=useCurrencyBalance(account,hnrusdToken);
@@ -71,62 +84,21 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
     setbusdBuyValue(last.toFixed(3));
   }
 
- const busdBEP20=useERC20(busdToken.address);
- const husdBEP20=useERC20(hnrusdToken.address);
- const financeHNRUSDContract="0x8502dC7D2EF0Ee091A3AFeD14B1c418608F4f07a";
- const finance = getContract(financeHNRUSDContract,financeAbi,library,account)
+ 
 
- useEffect(()=>{
-  const checkBalance=async () =>{
-    const balance=await busdBEP20.balanceOf(financeHNRUSDContract)
-    setBalanceBUSD(balance);
-  }
-  
-  checkBalance();
- })
+ 
 
- useEffect(()=>{
-    const checkApproval= async () => {
-      
-     const num=await busdBEP20.allowance(account,financeHNRUSDContract);
-     const num1=await husdBEP20.allowance(account,financeHNRUSDContract);
-     if(num>0)
-     {
-      setApprovalBUSD(1);
-     }
-     else
-     {
-      setApprovalBUSD(0);
-     }
-     if(num1>0)
-     {
-      setApprovalHUSD(1);
-     }
-     else
-     {
-      setApprovalHUSD(0);
-     }
-    }
-
-    checkApproval();
- },[account,busdBEP20,husdBEP20]);
+ 
 
  const sendBuyHUSDClick = async () => {
  
   const value =ethers.utils.parseEther(busdSellValue);
-  await finance.buyHUSD(value);
+  await tradeHNRUSD.buyHUSD(value);
  }
+ 
  const sendBUSDApproveClick= async () => {
-  busdBEP20.approve(financeHNRUSDContract,MaxUint256).then((res)=>{
-    if(res!==1)
-    {
-      setApprovalBUSD(0);
-    }
-    else
-    {
-      setApprovalBUSD(1);
-    }
-  });
+  const tokenAmount=new TokenAmount(busdToken,MaxUint256.toString());
+  
  }
   return (
     <Page>

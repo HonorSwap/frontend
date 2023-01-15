@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardBody, CardHeader, Flex, Heading,Text } from "@pancakeswap/uikit";
+import { Card, CardBody, CardHeader, Flex, Heading,Text } from "@honorswap/uiswap";
 
 interface IProps {
     time : string;

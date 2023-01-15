@@ -66,13 +66,14 @@ export default {
   bunnySpecialPrediction: {
     56: '0x342c99e9aC24157657095eC69CB04b73257e7A9C',
     97: '',
-
-  financeHNRUSD: {
+  },
+  tradeHNRUSD: {
     56: '',
-    97: '',
+    97: '0x8502dC7D2EF0Ee091A3AFeD14B1c418608F4f07a',
   },
+  financeHonor: {
+    56: '',
+    97: '0x03690C32bFA38f0581Fe22449a928560b52AaC48',
   },
-  
-  
 
 }
