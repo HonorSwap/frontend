@@ -19,9 +19,10 @@ import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { CurrencyAmount, JSBI, Token, TokenAmount, Trade } from '@honorswap/sdk'
 import { Button, Text, ArrowDownIcon, Box, useModal,Flex, AddIcon, Card, CardBody, CardHeader } from '@honorswap/uiswap'
 import  Page  from '../../components/Layout/Page'
+import ApprovalButton from "./components/ApprovalButton";
 import tokens, {testnetTokens} from '../../config/constants/tokens'
-import FinanceInfo from  '../../components/Finance/FinanceInfo'
-import financeAbi from '../../config/abi/financeHnrUsd.json'
+
+
 
 
 
@@ -68,6 +69,11 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
   const busdBalance=useCurrencyBalance(account,busdToken);
   const hnrusdBalance=useCurrencyBalance(account,hnrusdToken);
 
+  const busdHNRUSDBalance=useCurrencyBalance(tradeHNRUSD.address,busdToken);
+
+  const busdERC20=useERC20(busdToken.address);
+  const husdERC20=useERC20(hnrusdToken.address);
+
   const inputSetBUSD = (value:string) => {
     setbusdSellValue(value);
     const num = new BigNumber(value);
@@ -84,29 +90,21 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
     setbusdBuyValue(last.toFixed(3));
   }
 
- 
-
- 
-
- 
-
+  
  const sendBuyHUSDClick = async () => {
  
   const value =ethers.utils.parseEther(busdSellValue);
   await tradeHNRUSD.buyHUSD(value);
  }
  
- const sendBUSDApproveClick= async () => {
-  const tokenAmount=new TokenAmount(busdToken,MaxUint256.toString());
-  
- }
+
   return (
     <Page>
       <Card style={{width:'100%', marginRight:'5px'}} >
         <CardHeader>
         <div>Buy or Sell HNRUSD with BUSD All Time BUSD = HNRUSD</div>
         <div style={{marginTop:'10px'}}>Fee : %0.05</div>
-        <div style={{marginTop:'10px'}}>BUSD Stock : {balanceBUSD?.toFixed(2)}$</div>
+        <div style={{marginTop:'10px'}}>BUSD Stock : {busdHNRUSDBalance?.toFixed(2)}$</div>
         </CardHeader>
         </Card>
   <Flex padding="1" margin="1" flexDirection="row" justifyContent="space-between">
@@ -121,7 +119,7 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
                 value={busdSellValue}
                 onUserInput={(value:string)=>inputSetBUSD(value)}
                 onMax={()=>{
-                  inputSetBUSD(busdBalance.toFixed(3))
+                  inputSetBUSD(busdBalance?.toFixed(3))
                 }}
                 showMaxButton={Boolean(true)}
                 disableCurrencySelect
@@ -149,13 +147,12 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
                 <ArrowDownIcon width="24px" my="16px" />
               </ColumnCenter>
               <ColumnCenter>
-              {
-              approwalBUSD>0 ? (
+              <ApprovalButton token={busdToken} toApprove={tradeHNRUSD.address}>
+                
                 <Button variant="primary" onClick={sendBuyHUSDClick}>Buy HNRUSD</Button>
-              ) : (
-                <Button variant="primary" onClick={sendBUSDApproveClick}>Enable BUSD</Button>
-              )
-            }
+              
+              </ApprovalButton>
+          
                 
               </ColumnCenter>
               
@@ -203,7 +200,11 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
                 <ArrowDownIcon width="24px" my="16px" />
               </ColumnCenter>
               <ColumnCenter>
-                <Button variant="danger">Sell HNRUSD</Button>
+              <ApprovalButton token={hnrusdToken} toApprove={tradeHNRUSD.address}>
+                
+                <Button variant="danger" onClick={sendBuyHUSDClick}>Sell HNRUSD</Button>
+              
+              </ApprovalButton>
               </ColumnCenter>
               
             </Box>

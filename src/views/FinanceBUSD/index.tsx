@@ -13,7 +13,7 @@ import { AppBody, AppHeader } from 'components/App'
 import { AutoColumn, ColumnCenter } from 'components/Layout/Column'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { Currency, CurrencyAmount, JSBI, Token, Trade } from '@honorswap/sdk'
-import { Button, Text, ArrowDownIcon, Box, useModal,Flex, AddIcon, Card, CardBody, CardHeader } from '@honorswap/uiswap'
+import { Button, Text, ArrowDownIcon, Box, useModal,Flex, AddIcon, Card, CardBody, CardHeader, ButtonMenuItem, ButtonMenu } from '@honorswap/uiswap'
 import  Page  from '../../components/Layout/Page'
 import tokens, {testnetTokens} from '../../config/constants/tokens'
 
@@ -21,6 +21,7 @@ import financeAbi from '../../config/abi/financeHnrUsd.json'
 import DepositCard from './DepositCard'
 import DepositCaption from "../Finance/components/DepositCaption";
 import CurrentDeposited from "../Finance/components/CurrentDeposited";
+
 
 
 
@@ -104,8 +105,19 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
 
     checkDeposited();
   },[account,financeBUSD])
+
+  let index1=1;
+  const handleClick1= () =>{
+    index1++;
+  }
   return (
     <Page>
+      <ButtonMenu activeIndex={index1} onItemClick={handleClick1} fullWidth variant="subtle">
+          <ButtonMenuItem>1 Month</ButtonMenuItem>
+          <ButtonMenuItem>3 Months</ButtonMenuItem>
+          <ButtonMenuItem>6 Months</ButtonMenuItem>
+          <ButtonMenuItem>1 Year</ButtonMenuItem>
+        </ButtonMenu>
         <CurrentDeposited />
         <DepositCaption tokenName="BUSD" month="12" month3="14" month6="16" year="18"/>
         
