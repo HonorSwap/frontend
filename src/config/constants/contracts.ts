@@ -73,7 +73,7 @@ export default {
   },
   financeHonor: {
     56: '',
-    97: '0x03690C32bFA38f0581Fe22449a928560b52AaC48',
+    97: '0x2E6a6f723445592A8b25DdAd354F54ff3d3EC46A',
   },
 
 }

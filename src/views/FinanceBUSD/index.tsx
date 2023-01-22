@@ -4,7 +4,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getContract } from 'utils'
 import { ethers } from 'ethers'
 import { MaxUint256 } from '@ethersproject/constants'
-import { useERC20 } from 'hooks/useContract'
+import { useERC20, useFinanceHonorContract } from 'hooks/useContract'
 import BigNumber from 'bignumber.js'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { RouteComponentProps } from 'react-router-dom'
@@ -21,7 +21,7 @@ import financeAbi from '../../config/abi/financeHnrUsd.json'
 import DepositCard from './DepositCard'
 import DepositCaption from "../Finance/components/DepositCaption";
 import CurrentDeposited from "../Finance/components/CurrentDeposited";
-
+import SelectDuration from '../Finance/components/SelectDuration'
 
 
 
@@ -38,51 +38,30 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
  
   const [approwalBUSD,setApprovalBUSD]=useState<number>(0);
   const [isDeposited,setIsDeposited]=useState(undefined);
-
+  const [selectDuration,setSelectDuration] = useState(0);
   const { account,library } = useActiveWeb3React()
 
   const { t } = useTranslation()
 
- 
-
+  const finance=useFinanceHonorContract();
   const busdToken=testnetTokens.busd;
 
 
   const busdBalance=useCurrencyBalance(account,busdToken);
- const busdBEP20=useERC20(busdToken.address);
+  const busdBEP20=useERC20(busdToken.address);
 
- const financeBUSDAddress="0x8502dC7D2EF0Ee091A3AFeD14B1c418608F4f07a";
- const financeBUSD = getContract(financeBUSDAddress,financeAbi,library,account)
 
 
   const sendDeposit = async (value:string,duration:string) =>{
     const busdValue =ethers.utils.parseEther(value);
-    financeBUSD.deposit(busdValue,"")
+    finance.depositToken(busdToken.address,busdValue,duration)
   }
    
 
- useEffect(()=>{
-    const checkApproval= async () => {
-      
-     const num=await busdBEP20.allowance(account,financeBUSDAddress);
-
-     if(num>0)
-     {
-      setApprovalBUSD(1);
-     }
-     else
-     {
-      setApprovalBUSD(0);
-     }
-    
-    }
-
-    checkApproval();
- },[account,busdBEP20]);
 
 
  const sendBUSDApproveClick= async () => {
-  busdBEP20.approve(financeBUSDAddress,MaxUint256).then((res)=>{
+  busdBEP20.approve(finance.address,MaxUint256).then((res)=>{
     if(res!==1)
     {
       setApprovalBUSD(0);
@@ -94,30 +73,18 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
   });
  }
 
-  useEffect(()=>{
-    const checkDeposited=async () =>{
-      const check=await financeBUSD.isDeposited(account);
-      if(check)
-        setIsDeposited(check);
-      else
-        setIsDeposited(undefined);
-    }
 
-    checkDeposited();
-  },[account,financeBUSD])
 
   let index1=1;
   const handleClick1= () =>{
     index1++;
   }
+  const setDuration = (index) => {
+    setSelectDuration(index);
+  }
   return (
     <Page>
-      <ButtonMenu activeIndex={index1} onItemClick={handleClick1} fullWidth variant="subtle">
-          <ButtonMenuItem>1 Month</ButtonMenuItem>
-          <ButtonMenuItem>3 Months</ButtonMenuItem>
-          <ButtonMenuItem>6 Months</ButtonMenuItem>
-          <ButtonMenuItem>1 Year</ButtonMenuItem>
-        </ButtonMenu>
+      <SelectDuration setDuration={setDuration} />
         <CurrentDeposited />
         <DepositCaption tokenName="BUSD" month="12" month3="14" month6="16" year="18"/>
         
