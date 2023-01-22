@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 export const useFinanceGetBalance = (account: string,token:string) => {
     
     const finance=useFinanceHonorContract();
-    const [balance,setBalance] = useState(0);
+    const [balance,setBalance] = useState(undefined);
     
     useEffect(  () => {
         const checkFinance=async () => {
         const bal=await finance.getUserTokenBalance(account,token);
-        console.log(bal);
+       
         setBalance(bal);
         }
     

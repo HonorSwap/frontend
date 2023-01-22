@@ -15,11 +15,11 @@ export default function SelectDuration (props) {
     }
 
     return (
-        <ButtonMenu activeIndex={index} onItemClick={onItemClick} fullWidth variant="subtle">
+    <ButtonMenu activeIndex={index} onItemClick={onItemClick} fullWidth variant="subtle">
         <ButtonMenuItem >1 Month</ButtonMenuItem>
         <ButtonMenuItem>3 Months</ButtonMenuItem>
         <ButtonMenuItem>6 Months</ButtonMenuItem>
         <ButtonMenuItem>1 Year</ButtonMenuItem>
-      </ButtonMenu>
+    </ButtonMenu>
     )
   }

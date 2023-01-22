@@ -1,5 +1,4 @@
 import React,{useState} from 'react'
-import BigNumber from "bignumber.js"
 import { useFinanceHonorContract } from 'hooks/useContract';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { Alert, ArrowDownIcon, Box, Button, Card, CardBody, CardHeader, Table, Td, Th } from "@honorswap/uiswap";
@@ -8,18 +7,17 @@ import { AutoColumn, ColumnCenter } from "components/Layout/Column";
 import Row from 'components/Layout/Row';
 import {testnetTokens} from '../../../config/constants/tokens'
 import { useFinanceGetBalance } from '../hooks/useFinanceGetBalance';
-import { FinanceBalance } from '../financeTypes';
 
 
-export default function CurrentDeposited (props) {
+
+export default function TokenFinanceInfo (props) {
 
     const {account} = useActiveWeb3React();
     const finance=useFinanceHonorContract();
 
+    const balance=useFinanceGetBalance(account,testnetTokens.busd.address);
 
-    const balance : FinanceBalance=useFinanceGetBalance(account,testnetTokens.busd.address);
-
-    console.log(balance);
+    
     const {tokenName,month,month3,month6,year}=props;
     
 
@@ -32,7 +30,7 @@ export default function CurrentDeposited (props) {
         <CardBody>
           <Table>
             <tr>
-          <Th textAlign="left">Start Balance</Th><Td textAlign="right">{balance?.amount.toString()}</Td>
+          <Th textAlign="left">Start Balance</Th><Td textAlign="right">10.000</Td>
           <Th textAlign="left">Start Date</Th><Td textAlign="right">01.11.2022</Td>
           </tr><tr>
           
