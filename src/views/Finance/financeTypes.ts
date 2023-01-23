@@ -8,7 +8,11 @@ export interface FinanceBalance {
     busdValue : BigNumber;
 }
 
-export interface FinanceIsDeposit {
-    isDeposited : boolean;
+export interface FinanceInfo {
+    
+    _maxAmountPerUser : BigNumber;
+    _maxTotalAmount : BigNumber;
+    _totalAmount : BigNumber;
+    _interest : BigNumber;
 
 }

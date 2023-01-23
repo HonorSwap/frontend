@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import BigNumber from "bignumber.js"
 import { useFinanceHonorContract } from 'hooks/useContract';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
-import { Alert, ArrowDownIcon, Box, Button, Card, CardBody, CardHeader, Table, Td, Th } from "@honorswap/uiswap";
+import { Alert, ArrowDownIcon, Box, Button, Card, CardBody, CardHeader, Heading, Table, Td, Th } from "@honorswap/uiswap";
 import CurrencyInputPanel from "components/CurrencyInputPanel";
 import { AutoColumn, ColumnCenter } from "components/Layout/Column";
 import Row from 'components/Layout/Row';
@@ -13,18 +13,19 @@ import { FinanceBalance } from '../financeTypes';
 
 export default function CurrentDeposited (props) {
 
-    const {account} = useActiveWeb3React();
-    const finance=useFinanceHonorContract();
+    const {user,token,contract} = props;
+
+    const balance : FinanceBalance=useFinanceGetBalance(user,token?.address);
 
 
-    const balance : FinanceBalance=useFinanceGetBalance(account,testnetTokens.busd.address);
-
-    console.log(balance);
-    const {tokenName,month,month3,month6,year}=props;
+    if(balance === undefined)
+      return (<Heading textAlign="center">Loading Is Deposited...</Heading>)
     
-
+    if(balance?.amount.toString() === "0" )
+      return (<div>&nbsp;</div>)
 
     return (
+    
       <Card style={{width:'100%', marginRight:'5px'}} >
         <CardHeader>
             <b>Current Deposited</b>

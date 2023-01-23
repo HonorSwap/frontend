@@ -22,6 +22,8 @@ import DepositCard from './DepositCard'
 import DepositCaption from "../Finance/components/DepositCaption";
 import CurrentDeposited from "../Finance/components/CurrentDeposited";
 import SelectDuration from '../Finance/components/SelectDuration'
+import { FinanceInfo } from '../Finance/financeTypes'
+import { useFinanceTokenInfo } from '../Finance/hooks/useFinanceTokenInfo'
 
 
 
@@ -46,7 +48,8 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
   const finance=useFinanceHonorContract();
   const busdToken=testnetTokens.busd;
 
-
+  const info : FinanceInfo = useFinanceTokenInfo(busdToken.address);
+  
   const busdBalance=useCurrencyBalance(account,busdToken);
   const busdBEP20=useERC20(busdToken.address);
 
@@ -56,8 +59,44 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
     const busdValue =ethers.utils.parseEther(value);
     finance.depositToken(busdToken.address,busdValue,duration)
   }
-   
+  
+  const infoStr : string= info?._interest.toString();
 
+  const getInterest = (interest : BigNumber) => {
+    const year=new BigNumber(31536000);
+
+    const type=typeof(interest);
+    const type1=typeof(year);
+
+
+    if( type1 === type )
+    {
+      const intNum=new BigNumber(interest.toString())
+      const yearNum:BigNumber=intNum.multipliedBy(year)
+      const oneCoin=new BigNumber(1e18)
+      const faiz=oneCoin.div(yearNum).multipliedBy(100);
+      return faiz.toFixed(2);
+    }
+    return "0";
+  }
+  const getDurationCaption = (duration) => {
+    let str;
+    const intStr=getInterest(info?._interest)
+    switch(duration) {
+      case 0 :
+        str="1 Month " ;
+        return str + intStr ;
+      case 1:
+        return "3 Months";
+      case 2:
+        return "6 Months";
+      case 3:
+        return "1 Year";
+      default:
+        return "Loading.."
+    }
+    return "Loading.";
+  }
 
 
  const sendBUSDApproveClick= async () => {
@@ -72,16 +111,11 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
     }
   });
  }
-
-
-
- 
- 
-
+  
   return (
     <Page>
       
-        <CurrentDeposited />
+        <CurrentDeposited user={account} token={busdToken} contract={finance}/>
         <DepositCaption tokenName="BUSD" month="12" month3="14" month6="16" year="18"/>
         <Heading scale="lg" color="text" textAlign="center">
           {t('Select Duration')}
@@ -89,7 +123,7 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
         <SelectDuration setDuration={setSelectDuration} />
     <Flex padding="1" margin="1" flexDirection="row" justifyContent="space-between">
     <DepositCard
-    caption="1 Month (%12 APY)"
+    caption={getDurationCaption(selectDuration)}
     balanceBUSD={busdBalance} 
     approwalBUSD={approwalBUSD}
     sendDeposit={sendDeposit}
