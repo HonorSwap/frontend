@@ -24,6 +24,7 @@ import CurrentDeposited from "../Finance/components/CurrentDeposited";
 import SelectDuration from '../Finance/components/SelectDuration'
 import { FinanceInfo } from '../Finance/financeTypes'
 import { useFinanceTokenInfo } from '../Finance/hooks/useFinanceTokenInfo'
+import FinanceTable from '../Finance/FinanceTable'
 
 
 
@@ -116,10 +117,13 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
     <Page>
       
         <CurrentDeposited user={account} token={busdToken} contract={finance}/>
+        <FinanceTable token={busdToken} />
         <DepositCaption tokenName="BUSD" month="12" month3="14" month6="16" year="18"/>
+        <div>&nbsp;</div>
         <Heading scale="lg" color="text" textAlign="center">
           {t('Select Duration')}
         </Heading>
+        <div>&nbsp;</div>
         <SelectDuration setDuration={setSelectDuration} />
     <Flex padding="1" margin="1" flexDirection="row" justifyContent="space-between">
     <DepositCard

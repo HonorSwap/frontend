@@ -22,7 +22,7 @@ export default function DepositCaption (props) {
         <div style={{marginTop:'10px'}}>1 Year   : %{year} APY</div>
         </CardHeader>
         <Alert title="info">
-          <p>If there is not enough repayment in the system at the end of the maturity, the refund will be made as Honor with 2% extra interest.</p>
+          <p>If the balance of the relevant coin is not available for payment, payment will be made with 2% extra in HonorCoin.</p>
         </Alert>
       </Card>
     )

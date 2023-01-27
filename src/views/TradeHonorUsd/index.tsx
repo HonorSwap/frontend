@@ -96,7 +96,11 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
   const value =ethers.utils.parseEther(busdSellValue);
   await tradeHNRUSD.buyHUSD(value);
  }
- 
+
+ const sendBuyBUSDClick = async () => {
+  const value=ethers.utils.parseEther(husdSellValue);
+  await tradeHNRUSD.sellHUSD(value);
+ }
 
   return (
     <Page>
@@ -202,7 +206,7 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
               <ColumnCenter>
               <ApprovalButton token={hnrusdToken} toApprove={tradeHNRUSD.address}>
                 
-                <Button variant="danger" onClick={sendBuyHUSDClick}>Sell HNRUSD</Button>
+                <Button variant="danger" onClick={sendBuyBUSDClick}>Sell HNRUSD</Button>
               
               </ApprovalButton>
               </ColumnCenter>
