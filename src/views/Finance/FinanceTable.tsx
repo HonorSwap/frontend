@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import BigNumber from "bignumber.js"
 import { ethers } from 'ethers';
 import { useFinanceHonorContract } from 'hooks/useContract';
@@ -11,22 +11,25 @@ import {testnetTokens} from '../../config/constants/tokens'
 import { useFinanceGetBalance } from './hooks/useFinanceGetBalance';
 import {  FinanceInfo } from './financeTypes';
 import { useFinanceTokenInfo } from './hooks/useFinanceTokenInfo';
+import FinanceUtil from './financeUtils';
 
 
 
 export default function FinanceTable (props) {
 
-    const {user,token,contract} = props;
+    const {token} = props;
+
 
     const info : FinanceInfo=useFinanceTokenInfo(token.address);
 
-
+ 
     if(info === undefined)
       return (<Heading textAlign="center">Loading Is Info...</Heading>)
     
     if(info?._maxAmountPerUser.toString() === "0" )
       return (<div>&nbsp;</div>)
 
+    
     const format = (value) => {
         if(value)
         {
@@ -46,14 +49,16 @@ export default function FinanceTable (props) {
     }
 
     const maxUser=new BigNumber(info._maxAmountPerUser.toString()).dividedBy(new BigNumber(10).pow(18)).toNumber()
-    
-    const minToMax = (first : number,last : number) => {
-        const num1=first.toString().replace(/(.)(?=(\d{3})+$)/g,'$1,')
-        const num2=last.toString().replace(/(.)(?=(\d{3})+$)/g,'$1,')
+    const tokenInterest=new BigNumber(info._interest.toString());
 
-        return `${num1} - ${num2}`
+
+
+    const getCurAPY = (factor : BigNumber) => {
+      const interest=tokenInterest.multipliedBy(factor);
+      const year=new BigNumber(31536000).multipliedBy(interest);
+      const last=year.dividedBy(new BigNumber(1e16)).toFixed(2);
+      return last;
     }
-
     return (
     
       <Card style={{width:'100%', marginRight:'5px'}} >
@@ -77,32 +82,32 @@ export default function FinanceTable (props) {
                 <Th>1 Year</Th>
             </tr>
             <tr>
-                <Td textAlign="center">{minToMax(0,maxUser/100)}</Td>
-                <Td textAlign="center">%10</Td>
-                <Td textAlign="center">%12</Td>
-                <Td textAlign="center">%14</Td>
-                <Td textAlign="center">%16</Td>
+                <Td textAlign="center">{FinanceUtil.minToMax(0,maxUser/100)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToAPY(tokenInterest,12)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.105,4)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.218,2)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.358,1)}</Td>
             </tr>
             <tr>
-                <Td textAlign="center">{minToMax(maxUser/100,maxUser/10)}</Td>
-                <Td textAlign="center">%11</Td>
-                <Td textAlign="center">%13</Td>
-                <Td textAlign="center">%15</Td>
-                <Td textAlign="center">%17</Td>
+                <Td textAlign="center">{FinanceUtil.minToMax(maxUser/100,maxUser/10)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.095,12)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.201,4)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.317,2)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.463,1)}</Td>
             </tr>
             <tr>
-                <Td textAlign="center">{minToMax(maxUser/10,maxUser/2)}</Td>
-                <Td textAlign="center">%12</Td>
-                <Td textAlign="center">%14</Td>
-                <Td textAlign="center">%16</Td>
-                <Td textAlign="center">%18</Td>
+                <Td textAlign="center">{FinanceUtil.minToMax(maxUser/10,maxUser/2)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.19,12)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.392,4)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.61,2)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.881,1)}</Td>
             </tr>
             <tr>
-                <Td textAlign="center">{minToMax(maxUser/2,maxUser)}</Td>
-                <Td textAlign="center">%13</Td>
-                <Td textAlign="center">%15</Td>
-                <Td textAlign="center">%17</Td>
-                <Td textAlign="center">%19</Td>
+                <Td textAlign="center">{FinanceUtil.minToMax(maxUser/2,maxUser)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.377,12)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.58,4)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,1.803,2)}</Td>
+                <Td textAlign="center">%{FinanceUtil.interestToApyFactor(tokenInterest,2.09,1)}</Td>
             </tr>
 
           

@@ -5,17 +5,17 @@ import Dots from "components/Loader/Dots";
 import { ApprovalState, useApproveCallback } from "hooks/useApproveCallback"
 import { MaxUint256 } from '@ethersproject/constants'
 import { useTranslation } from 'contexts/Localization'
+import BigNumber from 'bignumber.js';
 
 type ApprovalProps = {
     token : Token,
     toApprove : string,
+    amount?: BigNumber,
     children? : React.ReactNode
 }
 
-const ApprovalButton = ({ token, toApprove,children }: ApprovalProps) => {
+const ApprovalButton = ({ token, toApprove,amount,children }: ApprovalProps) => {
 
-
-   
 
     const tokenAmount=new TokenAmount(token,MaxUint256.toBigInt());
     

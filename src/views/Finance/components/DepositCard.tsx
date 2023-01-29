@@ -3,16 +3,17 @@ import { ArrowDownIcon, Box, Button, Card, CardBody, CardHeader } from "@honorsw
 import CurrencyInputPanel from "components/CurrencyInputPanel";
 import { AutoColumn, ColumnCenter } from "components/Layout/Column";
 import {testnetTokens} from '../../../config/constants/tokens'
+import ApprovalButton from './ApprovalButton';
 
 export default function DepositCard (props) {
     const [busdValue,setbusdValue]=useState<string>("");
   
-    const {caption,balance,approwal,sendDeposit,sendApproveClick}=props;
+    const {caption,balanceBUSD,approwalBUSD,sendDeposit,sendBUSDApproveClick}=props;
     
     const inputSetBUSD = (value:string) => {
       setbusdValue(value);
+   
     }
-
     return (
       <Card style={{width:'100%', marginRight:'5px'}} >
         <CardHeader>
@@ -25,7 +26,7 @@ export default function DepositCard (props) {
                   value={busdValue}
                   onUserInput={(value:string)=>inputSetBUSD(value)}
                   onMax={()=>{
-                    inputSetBUSD(balance.toFixed(3))
+                    inputSetBUSD(balanceBUSD.toFixed(3))
                   }}
                   showMaxButton={Boolean(true)}
                   disableCurrencySelect
@@ -40,11 +41,12 @@ export default function DepositCard (props) {
                   <ArrowDownIcon width="24px" my="16px" />
                 </ColumnCenter>
                 <ColumnCenter>
+                
                 {
-                approwal>0 ? (
+                approwalBUSD>0 ? (
                   <Button variant="primary" onClick={sendDeposit(busdValue)}>Deposit</Button>
                 ) : (
-                  <Button variant="primary" onClick={sendApproveClick}>Enable BUSD</Button>
+                  <Button variant="primary" onClick={sendBUSDApproveClick}>Enable BUSD</Button>
                 )
               }
                   
