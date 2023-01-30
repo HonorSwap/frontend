@@ -86,6 +86,24 @@ export default class FinanceUtil
         const num=new BigNumber(val);
         return num.dividedBy(new BigNumber(1e18)).toFixed(fixed);
       }
+
+      public static tokenFormatStr = (value,symbol) => {
+        if(value)
+        {
+        
+            const numdigit=new BigNumber(10).pow(18);
+            let retVal= new BigNumber(value).dividedBy(numdigit).integerValue().toFormat(0, {
+                decimalSeparator: '',
+                groupSeparator: ''
+        });
+            retVal=retVal.replace(/(.)(?=(\d{3})+$)/g,'$1,')
+            const ret=`${retVal} ${symbol}` ;
+            return ret;
+        }
+    
+            
+        return "Loading.."
+    }
 }
 
 

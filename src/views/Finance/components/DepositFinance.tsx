@@ -67,7 +67,7 @@ export default function DepositFinance (props) {
                 <ColumnCenter>
                 <ApprovalButton toApprove={finance.address} token={token} amount={bal?._maxAmountPerUser}>
                 
-                  <Button variant="primary" onClick={sendDeposit(value,"1")}>Deposit</Button>
+                  <Button variant="primary" onClick={sendDeposit(value)}>Deposit</Button>
                 
                 </ApprovalButton>
                   

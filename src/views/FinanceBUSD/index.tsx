@@ -47,12 +47,33 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
 
 
 
-  const sendDeposit = async (value:string,duration:string) =>{
+  const sendDeposit = async (value:string) =>{
     const intValue=parseInt(value);
     if(intValue>0)
     {
+      let timeDuration="";
+
+      switch(selectDuration)
+      {
+        case 0:
+          timeDuration="2592000";
+          break;
+        case 1:
+          timeDuration="7776000";
+          break;
+        case 2:
+          timeDuration="15552000"
+          break;
+        case 3:
+          timeDuration="31536000";
+          break;
+          default:
+            timeDuration="";
+      }
+      if(timeDuration==="")
+        return;
       const busdValue =ethers.utils.parseEther(value);
-      await finance.depositToken(busdToken.address,busdValue,duration)
+      await finance.depositToken(busdToken.address,busdValue,timeDuration)
     }
   }
 
@@ -61,7 +82,7 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
     <Page>
       
         <CurrentDeposited user={account} token={busdToken} contract={finance}/>
-        <FinanceTable token={busdToken} />
+        <FinanceTable token={busdToken.address} symbol={busdToken.symbol} />
         
         <div>&nbsp;</div>
         

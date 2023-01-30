@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useApproveCallback } from 'hooks/useApproveCallback'
 import styled from 'styled-components'
-
+import useToast from 'hooks/useToast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTokenAllowance from 'hooks/useTokenAllowance'
 
@@ -36,6 +36,7 @@ import tokens, {testnetTokens} from '../../config/constants/tokens'
 
 
 
+
 const Label = styled(Text)`
   font-size: 12px;
   font-weight: bold;
@@ -48,7 +49,7 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
   const [approwalHUSD,setApprovalHUSD]=useState<number>(0);
   const [balanceBUSD,setBalanceBUSD]=useState<BigNumber>(undefined);
   const { account,library } = useActiveWeb3React()
-
+  const { toastSuccess, toastError } = useToast()
   const tradeHNRUSD=useTradeHNRUSDContract();
 
   const { t } = useTranslation()
@@ -101,6 +102,9 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
   const value=ethers.utils.parseEther(husdSellValue);
   await tradeHNRUSD.sellHUSD(value);
  }
+ const testClick = () => {
+  toastSuccess("Success")
+ }
 
   return (
     <Page>
@@ -117,6 +121,7 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
         Buy HNRUSD
       </CardHeader>
       <CardBody>
+        <Button onClick={testClick} >Test</Button>
         <AutoColumn gap="20px">
     <Box my="16px">
               <CurrencyInputPanel

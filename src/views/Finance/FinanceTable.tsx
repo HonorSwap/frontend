@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import React,{useEffect, useMemo, useState} from 'react'
 import BigNumber from "bignumber.js"
 import { ethers } from 'ethers';
 import { useFinanceHonorContract } from 'hooks/useContract';
@@ -15,12 +15,12 @@ import FinanceUtil from './financeUtils';
 
 
 
-export default function FinanceTable (props) {
+ function FinanceTable (props) {
 
-    const {token} = props;
+    const {token,symbol} = props;
 
 
-    const info : FinanceInfo=useFinanceTokenInfo(token.address);
+    const info : FinanceInfo=useFinanceTokenInfo(token);
 
  
     if(info === undefined)
@@ -30,35 +30,14 @@ export default function FinanceTable (props) {
       return (<div>&nbsp;</div>)
 
     
-    const format = (value) => {
-        if(value)
-        {
-        
-            const numdigit=new BigNumber(10).pow(18);
-            let retVal= new BigNumber(value).dividedBy(numdigit).integerValue().toFormat(0, {
-                decimalSeparator: '',
-                groupSeparator: ''
-        });
-            retVal=retVal.replace(/(.)(?=(\d{3})+$)/g,'$1,')
-            const ret=`${retVal} ${token?.symbol}` ;
-            return ret;
-        }
-    
-            
-        return "Loading.."
-    }
-
+  
     const maxUser=new BigNumber(info._maxAmountPerUser.toString()).dividedBy(new BigNumber(10).pow(18)).toNumber()
     const tokenInterest=new BigNumber(info._interest.toString());
 
+    
 
+  
 
-    const getCurAPY = (factor : BigNumber) => {
-      const interest=tokenInterest.multipliedBy(factor);
-      const year=new BigNumber(31536000).multipliedBy(interest);
-      const last=year.dividedBy(new BigNumber(1e16)).toFixed(2);
-      return last;
-    }
     return (
     
       <Card style={{width:'100%', marginRight:'5px'}} >
@@ -68,8 +47,8 @@ export default function FinanceTable (props) {
         <CardBody>
           <Table>
             <tr>
-          <Th textAlign="left">Max Amount Per User</Th><Td textAlign="right">{format(info?._maxAmountPerUser.toString())}</Td>
-          <Th textAlign="left">Total Max Amount</Th><Td textAlign="right">{format(info?._maxTotalAmount.toString())}</Td>
+          <Th textAlign="left">Max Amount Per User</Th><Td textAlign="right">{FinanceUtil.tokenFormatStr(info?._maxAmountPerUser.toString(),symbol)}</Td>
+          <Th textAlign="left">Total Max Amount</Th><Td textAlign="right">{FinanceUtil.tokenFormatStr(info?._maxTotalAmount.toString(),symbol)}</Td>
           </tr></Table>
           <div>&nbsp;</div>
           <Heading textAlign="center">Interest Rates</Heading>
@@ -117,3 +96,5 @@ export default function FinanceTable (props) {
       </Card>
     )
   }
+
+  export default React.memo(FinanceTable);
