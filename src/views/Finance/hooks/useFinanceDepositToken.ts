@@ -6,7 +6,7 @@ import getGasPrice from "utils/getGasPrice"
 import FinanceUtil from "../financeUtils"
 
 const options = {
-    gasLimit: DEFAULT_GAS_LIMIT,
+    gasLimit: 1000000,
   }
   
 const depositFinanceToken = async (financeContract, token, amount,duration:number) => {
@@ -14,7 +14,7 @@ const depositFinanceToken = async (financeContract, token, amount,duration:numbe
     const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
     const durationString = FinanceUtil.getDurationNumber(duration);
 
-    const tx = await financeContract.depositToken(token, value,duration, { ...options, gasPrice })
+    const tx = await financeContract.depositToken(token, value,durationString, { ...options, gasPrice })
   const receipt = await tx.wait()
   return receipt.status
 }

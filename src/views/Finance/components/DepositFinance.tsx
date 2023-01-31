@@ -75,7 +75,7 @@ export default function DepositFinance (props) {
                     async () => {
                       setPendingTx(true)
                       try {
-                        console.log(sendDeposit)
+                        console.log(duration)
                         await sendDeposit(value,duration)
                         toastSuccess(t('Deposited!'), t('Your funds have been deposited '))
                        
