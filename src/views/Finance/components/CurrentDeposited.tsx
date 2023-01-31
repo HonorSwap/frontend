@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import BigNumber from "bignumber.js"
 import { useFinanceHonorContract } from 'hooks/useContract';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
@@ -8,21 +8,36 @@ import { AutoColumn, ColumnCenter } from "components/Layout/Column";
 import Row from 'components/Layout/Row';
 import {testnetTokens} from '../../../config/constants/tokens'
 import { useFinanceGetBalance } from '../hooks/useFinanceGetBalance';
-import { FinanceBalance } from '../financeTypes';
+import { FinanceBalance, FinanceInfo } from '../financeTypes';
+import FinanceUtil from '../financeUtils';
+import { useFinanceTokenInfo } from '../hooks/useFinanceTokenInfo';
 
 
 export default function CurrentDeposited (props) {
 
-    const {user,token,contract} = props;
+    const [endBalance,setEndBalance] = useState("Loading...")
+    const [startDate,setStartDate] = useState("Loading...");
+    const [endDate,setEndDate] = useState("Loading...");
+
+    const {user,token} = props;
 
     const balance : FinanceBalance=useFinanceGetBalance(user,token?.address);
-
+    
+    useEffect(()=>{
+      if(balance!==undefined)
+      {
+        setStartDate("");
+      }
+    },[balance])
 
     if(balance === undefined)
       return (<Heading textAlign="center">Loading Is Deposited...</Heading>)
     
-    if(balance?.amount.toString() === "0" )
+    if(!balance?.amount.gt(0) )
       return (<div>&nbsp;</div>)
+
+    
+ 
 
     return (
     
@@ -33,8 +48,8 @@ export default function CurrentDeposited (props) {
         <CardBody>
           <Table>
             <tr>
-          <Th textAlign="left">Start Balance</Th><Td textAlign="right">{balance?.amount.toString()}</Td>
-          <Th textAlign="left">Start Date</Th><Td textAlign="right">01.11.2022</Td>
+          <Th textAlign="left">Start Balance</Th><Td textAlign="right">{FinanceUtil.tokenFormatStr(balance.amount.toString(),token.symbol)}</Td>
+          <Th textAlign="left">Start Date</Th><Td textAlign="right">{balance?.startTime.toString()}</Td>
           </tr><tr>
           
           <Th textAlign="left">End Balance</Th><Td textAlign="right">12.000</Td>

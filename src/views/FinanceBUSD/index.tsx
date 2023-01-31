@@ -22,16 +22,18 @@ import DepositCard from '../Finance/components/DepositCard'
 import DepositCaption from "../Finance/components/DepositCaption";
 import CurrentDeposited from "../Finance/components/CurrentDeposited";
 import SelectDuration from '../Finance/components/SelectDuration'
-import { FinanceInfo } from '../Finance/financeTypes'
+import { FinanceBalance, FinanceInfo } from '../Finance/financeTypes'
 import { useFinanceTokenInfo } from '../Finance/hooks/useFinanceTokenInfo'
 import FinanceTable from '../Finance/FinanceTable'
 import DepositFinance from '../Finance/components/DepositFinance'
 import { useDepositFinanceToken } from '../Finance/hooks/useFinanceDepositToken'
+import { useFinanceGetBalance } from '../Finance/hooks/useFinanceGetBalance'
 
 
 
 export default function FinanceBUSD({ history }: RouteComponentProps) {
  
+  const [isDeposit,setIsDeposit] = useState(false);
 
   const [selectDuration,setSelectDuration] = useState(0);
   const { account } = useActiveWeb3React()
@@ -41,38 +43,62 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
   const finance=useFinanceHonorContract();
   const busdToken=testnetTokens.busd;
 
-
-  
   const busdBalance=useCurrencyBalance(account,busdToken);
 
   const {onDeposit}= useDepositFinanceToken(busdToken.address);
 
+  const balance : FinanceBalance=useFinanceGetBalance(account,busdToken.address);
+
   
+  
+  useEffect(()=>{
+    if(balance !== undefined)
+    {
+      if(balance?.amount.gt(0))
+        setIsDeposit(true);
+      else
+        setIsDeposit(false);
+    }
+  },[balance])
+
+  const depositRender = () => {
+    return ( 
+      <div>
+    
+    <SelectDuration setDuration={setSelectDuration} />
+    <Flex padding="1" margin="1" flexDirection="row" justifyContent="space-between">
+    
+      <DepositFinance 
+        token={busdToken} 
+        balance={busdBalance?.toFixed(2)}
+        sendDeposit={onDeposit}
+      
+        duration={selectDuration}
+      />
+    </Flex>
+    </div>
+    )
+  }
+
+  const curDepositRender = () => {
+    return (
+<CurrentDeposited user={account} token={busdToken} contract={finance}/>
+    
+    )
+  }
 
 
   return (
     <Page>
       
-        <CurrentDeposited user={account} token={busdToken} contract={finance}/>
+        { isDeposit ? curDepositRender() :  <div>&nbsp;</div> }
+        <br/>
         <FinanceTable token={busdToken.address} symbol={busdToken.symbol} />
-        
-        <div>&nbsp;</div>
-        
-        
-        <SelectDuration setDuration={setSelectDuration} />
-        <Flex padding="1" margin="1" flexDirection="row" justifyContent="space-between">
-        
-          <DepositFinance 
-            token={busdToken} 
-            balance={busdBalance?.toFixed(2)}
-            sendDeposit={onDeposit}
-          
-            duration={selectDuration}
-          />
-        </Flex>
+        <br/>
+        { !isDeposit ? depositRender() : <div>&nbsp;</div> }
     
             
-            </Page>
+    </Page>
   )
 }
 

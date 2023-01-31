@@ -112,7 +112,7 @@ export default class FinanceUtil
         if(value)
         {
         
-            const numdigit=new BigNumber(10).pow(18);
+            const numdigit=new BigNumber(1e18);
             let retVal= new BigNumber(value).dividedBy(numdigit).integerValue().toFormat(0, {
                 decimalSeparator: '',
                 groupSeparator: ''
