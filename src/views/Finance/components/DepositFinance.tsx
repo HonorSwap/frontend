@@ -1,5 +1,7 @@
 import React,{useState} from 'react'
 import BigNumber from 'bignumber.js';
+import useToast from 'hooks/useToast';
+import { useTranslation } from 'contexts/Localization';
 import { useFinanceHonorContract } from 'hooks/useContract';
 import { ArrowDownIcon, Box, Button, Card, CardBody, CardHeader, Heading } from "@honorswap/uiswap";
 import CurrencyInputPanel from "components/CurrencyInputPanel";
@@ -12,11 +14,14 @@ import { FinanceInfo } from '../financeTypes';
 
 
 
+
+
 export default function DepositFinance (props) {
     const [value,setValue]=useState<string>("");
-  
+    const { toastSuccess, toastError } = useToast()
+    const [pendingTx, setPendingTx] = useState(false)
     const {balance,sendDeposit,token,duration}=props;
-    
+    const { t } = useTranslation()
     const finance=useFinanceHonorContract();
     const bal : FinanceInfo =useFinanceTokenInfo(token.address);
 
@@ -35,9 +40,8 @@ export default function DepositFinance (props) {
         setValue(balance)
       else
         setValue(num)
-  
-
     }
+
     return (
       <Card style={{width:'100%', marginRight:'5px'}} >
         <CardHeader>
@@ -67,7 +71,27 @@ export default function DepositFinance (props) {
                 <ColumnCenter>
                 <ApprovalButton toApprove={finance.address} token={token} amount={bal?._maxAmountPerUser}>
                 
-                  <Button variant="primary" onClick={sendDeposit(value)}>Deposit</Button>
+                  <Button variant="primary" disabled={pendingTx} onClick={
+                    async () => {
+                      setPendingTx(true)
+                      try {
+                        console.log(sendDeposit)
+                        await sendDeposit(value,duration)
+                        toastSuccess(t('Deposited!'), t('Your funds have been deposited '))
+                       
+                      } catch (e) {
+                        
+                        toastError(
+                          t(e.toString()),
+                          
+                          t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+                        )
+                        console.error(e)
+                      } finally {
+                        setPendingTx(false)
+                      }
+                    }
+                    }>Deposit</Button>
                 
                 </ApprovalButton>
                   
@@ -79,3 +103,4 @@ export default function DepositFinance (props) {
               </Card>
     )
   }
+

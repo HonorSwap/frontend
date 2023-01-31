@@ -26,6 +26,7 @@ import { FinanceInfo } from '../Finance/financeTypes'
 import { useFinanceTokenInfo } from '../Finance/hooks/useFinanceTokenInfo'
 import FinanceTable from '../Finance/FinanceTable'
 import DepositFinance from '../Finance/components/DepositFinance'
+import { useDepositFinanceToken } from '../Finance/hooks/useFinanceDepositToken'
 
 
 
@@ -44,38 +45,9 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
   
   const busdBalance=useCurrencyBalance(account,busdToken);
 
+  const {onDeposit}= useDepositFinanceToken(busdToken.address);
 
-
-
-  const sendDeposit = async (value:string) =>{
-    const intValue=parseInt(value);
-    if(intValue>0)
-    {
-      let timeDuration="";
-
-      switch(selectDuration)
-      {
-        case 0:
-          timeDuration="2592000";
-          break;
-        case 1:
-          timeDuration="7776000";
-          break;
-        case 2:
-          timeDuration="15552000"
-          break;
-        case 3:
-          timeDuration="31536000";
-          break;
-          default:
-            timeDuration="";
-      }
-      if(timeDuration==="")
-        return;
-      const busdValue =ethers.utils.parseEther(value);
-      await finance.depositToken(busdToken.address,busdValue,timeDuration)
-    }
-  }
+  
 
 
   return (
@@ -93,7 +65,7 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
           <DepositFinance 
             token={busdToken} 
             balance={busdBalance?.toFixed(2)}
-            sendDeposit={sendDeposit}
+            sendDeposit={onDeposit}
           
             duration={selectDuration}
           />
@@ -103,3 +75,4 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
             </Page>
   )
 }
+

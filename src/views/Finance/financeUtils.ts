@@ -82,6 +82,27 @@ export default class FinanceUtil
         return "Loading.";
       }
 
+      public static getDurationNumber = (duration: number)  => {
+       
+          switch(duration)
+          {
+            case 0:
+              return "2592000";
+              break;
+            case 1:
+              return "7776000";
+              break;
+            case 2:
+              return "15552000"
+              break;
+            case 3:
+              return "31536000";
+              break;
+              default:
+                return "2592000";
+          }
+      }
+      
       public static etherToNumber = (val : string,fixed : number ) => {
         const num=new BigNumber(val);
         return num.dividedBy(new BigNumber(1e18)).toFixed(fixed);
