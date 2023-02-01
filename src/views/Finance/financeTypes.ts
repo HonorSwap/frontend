@@ -1,9 +1,9 @@
 import BigNumber from "bignumber.js";
 
 export interface FinanceBalance {
-    startTime : BigNumber;
+    start_time : BigNumber;
     duration: BigNumber;
-    interestRate :BigNumber;
+    interest_rate :BigNumber;
     amount : BigNumber;
     busdValue : BigNumber;
 }

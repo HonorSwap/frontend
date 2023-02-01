@@ -1,4 +1,5 @@
 import React,{useEffect, useState} from 'react'
+import moment from 'moment';
 import BigNumber from "bignumber.js"
 import { useFinanceHonorContract } from 'hooks/useContract';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
@@ -11,6 +12,7 @@ import { useFinanceGetBalance } from '../hooks/useFinanceGetBalance';
 import { FinanceBalance, FinanceInfo } from '../financeTypes';
 import FinanceUtil from '../financeUtils';
 import { useFinanceTokenInfo } from '../hooks/useFinanceTokenInfo';
+
 
 
 export default function CurrentDeposited (props) {
@@ -37,7 +39,19 @@ export default function CurrentDeposited (props) {
       return (<div>&nbsp;</div>)
 
     
- 
+      console.log(balance);
+      const getTime = (value : number) => {
+        
+        return moment.unix(value).format('DD-MM-YYYY h:mm:ss ');
+        
+      }
+
+      const getEndBalance =(amount: BigNumber,interest: BigNumber,duration:BigNumber) => {
+        console.log(interest);
+        
+        const sum=BigNumber.sum(amount,interest.multipliedBy( duration ));
+        return FinanceUtil.tokenFormatStr(sum.toString(),token.symbol);
+      }
 
     return (
     
@@ -49,11 +63,11 @@ export default function CurrentDeposited (props) {
           <Table>
             <tr>
           <Th textAlign="left">Start Balance</Th><Td textAlign="right">{FinanceUtil.tokenFormatStr(balance.amount.toString(),token.symbol)}</Td>
-          <Th textAlign="left">Start Date</Th><Td textAlign="right">{balance?.startTime.toString()}</Td>
+          <Th textAlign="left">Start Date</Th><Td textAlign="right">{getTime(balance?.start_time.toNumber())}</Td>
           </tr><tr>
           
-          <Th textAlign="left">End Balance</Th><Td textAlign="right">12.000</Td>
-          <Th textAlign="left">End Date</Th><Td textAlign="right">01.11.2023</Td>
+          <Th textAlign="left">End Balance</Th><Td textAlign="right">{getEndBalance(balance?.amount,balance?.interest_rate,balance?.duration)}</Td>
+          <Th textAlign="left">End Date</Th><Td textAlign="right">{getTime(balance?.start_time.toNumber() + balance?.duration.toNumber())}</Td>
           </tr>
           </Table>
         </CardBody>
