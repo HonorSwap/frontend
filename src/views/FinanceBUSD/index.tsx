@@ -97,7 +97,6 @@ export default function FinanceBUSD({ history }: RouteComponentProps) {
         <br/>
         { !isDeposit ? depositRender() : <div>&nbsp;</div> }
     
-            
     </Page>
   )
 }

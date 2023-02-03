@@ -47,9 +47,15 @@ export default function CurrentDeposited (props) {
       }
 
       const getEndBalance =(amount: BigNumber,interest: BigNumber,duration:BigNumber) => {
-        console.log(interest);
         
-        const sum=BigNumber.sum(amount,interest.multipliedBy( duration ));
+        const _interest=new BigNumber(interest.toString());
+        const _amount=new BigNumber(amount.toString());
+        const _duration=new BigNumber(duration.toString());
+        console.log(`Veriler: Interest: ${_interest.toString()} Duration: ${_duration.toString()} Amount: ${_amount.toString()} `)
+        const totalInterest=_interest.multipliedBy(_duration).multipliedBy(1000);
+        console.log(`Total Interest: ${totalInterest.toString()}`)
+        const sum=BigNumber.sum(_amount, totalInterest);
+        console.log(`Sum: ${sum.toString()}`)
         return FinanceUtil.tokenFormatStr(sum.toString(),token.symbol);
       }
 
@@ -64,10 +70,14 @@ export default function CurrentDeposited (props) {
             <tr>
           <Th textAlign="left">Start Balance</Th><Td textAlign="right">{FinanceUtil.tokenFormatStr(balance.amount.toString(),token.symbol)}</Td>
           <Th textAlign="left">Start Date</Th><Td textAlign="right">{getTime(balance?.start_time.toNumber())}</Td>
-          </tr><tr>
-          
+          </tr>
+          <tr>
           <Th textAlign="left">End Balance</Th><Td textAlign="right">{getEndBalance(balance?.amount,balance?.interest_rate,balance?.duration)}</Td>
           <Th textAlign="left">End Date</Th><Td textAlign="right">{getTime(balance?.start_time.toNumber() + balance?.duration.toNumber())}</Td>
+          </tr>
+          <tr>
+          <Th textAlign="left">APR %</Th><Td textAlign="right">{FinanceUtil.getInterest(new BigNumber(balance?.interest_rate.toString()))}</Td>
+          <Th textAlign="left">APY %</Th><Td textAlign="right">{FinanceUtil.durationAprToApy(balance?.interest_rate.toString(),balance?.duration.toString())}</Td>
           </tr>
           </Table>
         </CardBody>

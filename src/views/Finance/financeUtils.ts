@@ -65,6 +65,29 @@ export default class FinanceUtil
         return FinanceUtil.interestToAPY(interest.multipliedBy(factor),period);
     }
 
+    public static durationAprToApy = (interest:string,duration:string) => {
+      const num=parseInt(duration);
+      const _interest=new BigNumber(interest);
+      if(num>=31536000)
+      {
+        return FinanceUtil.interestToApyFactor(_interest,1,1);
+      }
+      if(num>=7776000)
+      {
+        return FinanceUtil.interestToApyFactor(_interest,1,2);
+      }
+      if(num>=15552000)
+      {
+        return FinanceUtil.interestToApyFactor(_interest,1,4);
+      }
+      if(num>=2592000)
+      {
+        return FinanceUtil.interestToApyFactor(_interest,1,12);
+      }
+      return "Error!";
+
+    }
+    
     public static  getDurationCaption = (duration) => {
 
         switch(duration) {
@@ -102,7 +125,20 @@ export default class FinanceUtil
                 return "2592000";
           }
       }
-      
+
+      public static getNumberToDurationID = (duration:string) => {
+        const num=parseInt(duration);
+        if(num>=31536000)
+          return 3;
+        if(num>=15552000)
+          return 2;
+        if(num>=7776000)
+          return 1;
+        if(num>=2592000)
+          return 0;
+        return 4;
+      }
+
       public static etherToNumber = (val : string,fixed : number ) => {
         const num=new BigNumber(val);
         return num.dividedBy(new BigNumber(1e18)).toFixed(fixed);
