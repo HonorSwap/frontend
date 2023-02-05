@@ -12,7 +12,7 @@ export default class FinanceUtil
 
         const yearNum:BigNumber=interest.multipliedBy(FinanceUtil.YEAR_BN)
 
-        const faiz=FinanceUtil.ONE_BN.div(yearNum);
+        const faiz=yearNum.dividedBy(FinanceUtil.ONE_BN);
         return faiz.toFixed(2);
     }
 
@@ -45,6 +45,14 @@ export default class FinanceUtil
 
     public static aprToApy = (apr:number,period:number) => {
         return ((((1+((apr/100)/period))**period)-1)*100).toFixed(2);
+    }
+
+    public static coinToApy = (coin:string) => {
+      const num=new BigNumber(coin);
+
+      const apr=num.multipliedBy(FinanceUtil.YEAR_BN).dividedBy(1e16);
+    
+      return FinanceUtil.aprToApy(apr.toNumber(),12);
     }
 
     public static getCurAPY = (tokenInterest:BigNumber,duration:number) => {

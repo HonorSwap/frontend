@@ -26,9 +26,19 @@ export const connectorsByName: { [connectorName in ConnectorNames]: any } = {
 }
 
 export const getLibrary = (provider): ethers.providers.Web3Provider => {
+  try
+  {
+
+ 
   const library = new ethers.providers.Web3Provider(provider)
   library.pollingInterval = POLLING_INTERVAL
   return library
+  }
+  catch(e)
+  {
+    console.log(`Error Library: ${e.toString()}`)
+    return null;
+  }
 }
 
 /**

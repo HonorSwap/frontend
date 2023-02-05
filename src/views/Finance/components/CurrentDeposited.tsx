@@ -52,7 +52,7 @@ export default function CurrentDeposited (props) {
         const _amount=new BigNumber(amount.toString());
         const _duration=new BigNumber(duration.toString());
         console.log(`Veriler: Interest: ${_interest.toString()} Duration: ${_duration.toString()} Amount: ${_amount.toString()} `)
-        const totalInterest=_interest.multipliedBy(_duration).multipliedBy(1000);
+        const totalInterest=_interest.multipliedBy(_duration).multipliedBy(_amount).dividedBy(1e18);
         console.log(`Total Interest: ${totalInterest.toString()}`)
         const sum=BigNumber.sum(_amount, totalInterest);
         console.log(`Sum: ${sum.toString()}`)

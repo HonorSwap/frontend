@@ -22,6 +22,7 @@ import FinanceHNRUSD from './views/Finance/FinanceHNRUSD'
 import Pools from './views/Pools'
 import Swap from './views/Swap'
 import LotteryHNRUSD from './views/LotteryHNRUSD';
+import FinanceCalc from './views/FinanceCalc'
 
 import {
   RedirectDuplicateTokenIds,
@@ -137,6 +138,7 @@ const App: React.FC = () => {
             <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
             <Route exact strict path="/tradehnrusd" component={TradeHonorUsd} />
             <Route exact strict path="/financebusd" component={FinanceBUSD} />
+            <Route exact strict path="/financecalc" component={FinanceCalc} />
             <Route exact strict path="/financehnrusd" component={FinanceHNRUSD} />
             <Route exact strict path="/lotteryhnrusd" component={LotteryHNRUSD} />
             {/* Redirect */}
