@@ -17,20 +17,13 @@ import { useFinanceTokenInfo } from '../hooks/useFinanceTokenInfo';
 
 export default function CurrentDeposited (props) {
 
-    const [endBalance,setEndBalance] = useState("Loading...")
-    const [startDate,setStartDate] = useState("Loading...");
-    const [endDate,setEndDate] = useState("Loading...");
+
 
     const {user,token} = props;
 
     const balance : FinanceBalance=useFinanceGetBalance(user,token?.address);
     
-    useEffect(()=>{
-      if(balance!==undefined)
-      {
-        setStartDate("");
-      }
-    },[balance])
+   
 
     if(balance === undefined)
       return (<Heading textAlign="center">Loading Is Deposited...</Heading>)
@@ -39,7 +32,7 @@ export default function CurrentDeposited (props) {
       return (<div>&nbsp;</div>)
 
     
-      console.log(balance);
+      
       const getTime = (value : number) => {
         
         return moment.unix(value).format('DD-MM-YYYY h:mm:ss ');
@@ -57,6 +50,13 @@ export default function CurrentDeposited (props) {
         const sum=BigNumber.sum(_amount, totalInterest);
         console.log(`Sum: ${sum.toString()}`)
         return FinanceUtil.tokenFormatStr(sum.toString(),token.symbol);
+      }
+
+      const emergencyWidthdraw = (value:string,symbol:string) =>{
+        const bal=new BigNumber(value);
+
+        const em= bal.multipliedBy(9).dividedBy(10).toString();
+        return FinanceUtil.tokenFormatStr(em,symbol);
       }
 
     return (
@@ -79,7 +79,13 @@ export default function CurrentDeposited (props) {
           <Th textAlign="left">APR %</Th><Td textAlign="right">{FinanceUtil.getInterest(new BigNumber(balance?.interest_rate.toString()))}</Td>
           <Th textAlign="left">APY %</Th><Td textAlign="right">{FinanceUtil.durationAprToApy(balance?.interest_rate.toString(),balance?.duration.toString())}</Td>
           </tr>
+          <tr>
+            <Th colSpan={2}>Emergency Widthdraw Value (%10 Fee)</Th>
+            <Th colSpan={2}>{emergencyWidthdraw(balance?.amount.toString(),token.symbol)}</Th>
+          </tr>
           </Table>
+          <br />
+          <Button variant='danger'>Emergency Widthdraw</Button>
         </CardBody>
       </Card>
     )
