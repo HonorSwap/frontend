@@ -10,7 +10,7 @@ export const useFinanceGetBalance = (account: string,token:string) => {
     
     useEffect(  () => {
         const checkFinance=async () => {
-        const bal=await finance.getUserTokenBalance(account,token);
+        const bal=await finance._userBalances(account,token);
        
         setBalance(bal);
         }

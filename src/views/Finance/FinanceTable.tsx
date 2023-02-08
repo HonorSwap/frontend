@@ -26,13 +26,13 @@ import FinanceUtil from './financeUtils';
     if(info === undefined)
       return (<Heading textAlign="center">Loading Is Info...</Heading>)
     
-    if(info?._maxAmountPerUser.toString() === "0" )
+    if(info?.maxAmountPerUser.toString() === "0" )
       return (<div>&nbsp;</div>)
 
     
   
-    const maxUser=new BigNumber(info._maxAmountPerUser.toString()).dividedBy(new BigNumber(10).pow(18)).toNumber()
-    const tokenInterest=new BigNumber(info._interest.toString());
+    const maxUser=new BigNumber(info.maxAmountPerUser.toString()).dividedBy(new BigNumber(10).pow(18)).toNumber()
+    const tokenInterest=new BigNumber(info.interest.toString());
 
     
 
@@ -47,8 +47,8 @@ import FinanceUtil from './financeUtils';
         <CardBody>
           <Table>
             <tr>
-          <Th textAlign="left">Max Amount Per User</Th><Td textAlign="right">{FinanceUtil.tokenFormatStr(info?._maxAmountPerUser.toString(),symbol)}</Td>
-          <Th textAlign="left">Total Max Amount</Th><Td textAlign="right">{FinanceUtil.tokenFormatStr(info?._maxTotalAmount.toString(),symbol)}</Td>
+          <Th textAlign="left">Max Amount Per User</Th><Td textAlign="right">{FinanceUtil.tokenFormatStr(info?.maxAmountPerUser.toString(),symbol)}</Td>
+          <Th textAlign="left">Total Max Amount</Th><Td textAlign="right">{FinanceUtil.tokenFormatStr(info?.maxTotalAmount.toString(),symbol)}</Td>
           </tr></Table>
           <div>&nbsp;</div>
           <Heading textAlign="center">Interest Rates</Heading>

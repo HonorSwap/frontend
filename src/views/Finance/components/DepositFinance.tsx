@@ -34,7 +34,7 @@ export default function DepositFinance (props) {
     }
 
     const onMaxSetValue = () => {
-      const num=FinanceUtil.etherToNumber(bal._maxAmountPerUser.toString(),0);
+      const num=FinanceUtil.etherToNumber(bal.maxAmountPerUser.toString(),0);
       
       if(parseFloat(num) >= parseFloat(balance))
         setValue(balance)
@@ -69,13 +69,13 @@ export default function DepositFinance (props) {
                   <ArrowDownIcon width="24px" my="16px" />
                 </ColumnCenter>
                 <ColumnCenter>
-                <ApprovalButton toApprove={finance.address} token={token} amount={bal?._maxAmountPerUser}>
+                <ApprovalButton toApprove={finance.address} token={token} amount={bal?.maxAmountPerUser}>
                 
                   <Button variant="primary" disabled={pendingTx} onClick={
                     async () => {
                       setPendingTx(true)
                       try {
-                        console.log(duration)
+                      
                         await sendDeposit(value,duration)
                         toastSuccess(t('Deposited!'), t('Your funds have been deposited '))
                        

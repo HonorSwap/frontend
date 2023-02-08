@@ -10,9 +10,9 @@ export interface FinanceBalance {
 
 export interface FinanceInfo {
     
-    _maxAmountPerUser : BigNumber;
-    _maxTotalAmount : BigNumber;
-    _totalAmount : BigNumber;
-    _interest : BigNumber;
+    maxAmountPerUser : BigNumber;
+    maxTotalAmount : BigNumber;
+    totalAmount : BigNumber;
+    interest : BigNumber;
 
 }
