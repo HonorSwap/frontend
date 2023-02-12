@@ -69,7 +69,7 @@ export default {
   },
   tradeHNRUSD: {
     56: '',
-    97: '0x8502dC7D2EF0Ee091A3AFeD14B1c418608F4f07a',
+    97: '0xa1F6068B5e2a9CE0Ae96EED0602b84f9ec2b4b30',
   },
   financeHonor: {
     56: '',

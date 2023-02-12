@@ -18,7 +18,8 @@ import history from './routerHistory'
 // Views included in the main bundle
 import TradeHonorUsd from './views/TradeHonorUsd'
 import FinanceBUSD from './views/FinanceBUSD'
-import FinanceHNRUSD from './views/Finance/FinanceHNRUSD'
+import FinanceBNB from './views/FinanceBNB'
+import FinanceHNRUSD from './views/FinanceHNRUSD'
 import Pools from './views/Pools'
 import Swap from './views/Swap'
 import LotteryHNRUSD from './views/LotteryHNRUSD';
@@ -31,6 +32,7 @@ import {
 } from './views/AddLiquidity/redirects'
 import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/redirects'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
+
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -138,6 +140,9 @@ const App: React.FC = () => {
             <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
             <Route exact strict path="/tradehnrusd" component={TradeHonorUsd} />
             <Route exact strict path="/financebusd" component={FinanceBUSD} />
+            <Route exact strict path="/financebnb" component={FinanceBNB} />
+            <Route exact strict path="/bnbfinance" component={FinanceBNB} />
+            <Route exact strict path="/financehnrusd" component={FinanceHNRUSD} />
             <Route exact strict path="/financecalc" component={FinanceCalc} />
             <Route exact strict path="/financehnrusd" component={FinanceHNRUSD} />
             <Route exact strict path="/lotteryhnrusd" component={LotteryHNRUSD} />

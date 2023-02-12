@@ -19,9 +19,10 @@ import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { CurrencyAmount, JSBI, Token, TokenAmount, Trade } from '@honorswap/sdk'
 import { Button, Text, ArrowDownIcon, Box, useModal,Flex, AddIcon, Card, CardBody, CardHeader } from '@honorswap/uiswap'
 import  Page  from '../../components/Layout/Page'
-import ApprovalButton from "./components/ApprovalButton";
+import ApprovalButton from "../Finance/components/ApprovalButton";
 import tokens, {testnetTokens} from '../../config/constants/tokens'
-
+import USDBalanceTable from './components/USDBalanceTable'
+import HNRUSDFeeTable from './components/HNRUSDFeeTable'
 
 
 
@@ -48,7 +49,7 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
   const [approwalBUSD,setApprovalBUSD]=useState<number>(0);
   const [approwalHUSD,setApprovalHUSD]=useState<number>(0);
   const [balanceBUSD,setBalanceBUSD]=useState<BigNumber>(undefined);
-  const { account,library } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const { toastSuccess, toastError } = useToast()
   const tradeHNRUSD=useTradeHNRUSDContract();
 
@@ -57,8 +58,6 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
   const busdToken=testnetTokens.busd;
   const hnrusdToken=testnetTokens.hnrusd;
 
-  const allowanceBUSD=useTokenAllowance(busdToken,account,tradeHNRUSD.address);
-  const allowanceHNRUSD=useTokenAllowance(hnrusdToken,account,tradeHNRUSD.address);
 
   const [husdBuyValue,sethusdBuyValue] = useState<string>('');
   const [busdSellValue,setbusdSellValue] = useState<string>('');
@@ -70,23 +69,40 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
   const busdBalance=useCurrencyBalance(account,busdToken);
   const hnrusdBalance=useCurrencyBalance(account,hnrusdToken);
 
-  const busdHNRUSDBalance=useCurrencyBalance(tradeHNRUSD.address,busdToken);
-
-  const busdERC20=useERC20(busdToken.address);
-  const husdERC20=useERC20(hnrusdToken.address);
-
+  const valueToFee = (value) => {
+    const x=parseFloat(value);
+    
+    if(value<1000)
+    {
+      return x - (x*0.001);
+    }
+    if(value<10000)
+    {
+      return (x -x * 0.0008);
+    }
+    if(value<25000)
+    {
+      return (x-x*0.0006);
+    }
+    if(value<100000)
+    {
+      return (x-x*0.0004);
+    }
+    return (x-x*0.0002);
+  }
   const inputSetBUSD = (value:string) => {
     setbusdSellValue(value);
-    const num = new BigNumber(value);
-    const lastNum=num.div(2000).negated();
-    const last=num.plus(lastNum);
-    sethusdBuyValue(last.toFixed(3));
+    const num1=valueToFee(value);
+
+    const num = new BigNumber(num1);
+ 
+    sethusdBuyValue(num.toFixed(3));
   }
 
   const inputSetHUSD = (value:string) => {
     sethusdSellValue(value);
     const num = new BigNumber(value);
-    const lastNum=num.div(2000).negated();
+    const lastNum=num.div(500).negated();
     const last=num.plus(lastNum);
     setbusdBuyValue(last.toFixed(3));
   }
@@ -95,12 +111,12 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
  const sendBuyHUSDClick = async () => {
  
   const value =ethers.utils.parseEther(busdSellValue);
-  await tradeHNRUSD.buyHUSD(value);
+  await tradeHNRUSD.buyHNRUSD(value);
  }
 
  const sendBuyBUSDClick = async () => {
   const value=ethers.utils.parseEther(husdSellValue);
-  await tradeHNRUSD.sellHUSD(value);
+  await tradeHNRUSD.buyBUSD(value);
  }
  const testClick = () => {
   toastSuccess("Success")
@@ -110,9 +126,10 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
     <Page>
       <Card style={{width:'100%', marginRight:'5px'}} >
         <CardHeader>
-        <div>Buy or Sell HNRUSD with BUSD All Time BUSD = HNRUSD</div>
-        <div style={{marginTop:'10px'}}>Fee : %0.05</div>
-        <div style={{marginTop:'10px'}}>BUSD Stock : {busdHNRUSDBalance?.toFixed(2)}$</div>
+
+        <USDBalanceTable />
+        <div>&nbsp;</div>
+        <HNRUSDFeeTable />
         </CardHeader>
         </Card>
   <Flex padding="1" margin="1" flexDirection="row" justifyContent="space-between">
@@ -121,7 +138,7 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
         Buy HNRUSD
       </CardHeader>
       <CardBody>
-        <Button onClick={testClick} >Test</Button>
+        
         <AutoColumn gap="20px">
     <Box my="16px">
               <CurrencyInputPanel

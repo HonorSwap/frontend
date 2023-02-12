@@ -53,6 +53,10 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
         href: '/bnbfinance',
       },
       {
+        label: t('HNRUSD Finance'),
+        href: '/financehnrusd',
+      },
+      {
         label: t('Honor Finance'),
         href: '/honorfinance',
       },

@@ -31,7 +31,7 @@ import { useFinanceGetBalance } from '../Finance/hooks/useFinanceGetBalance'
 
 
 
-export default function FinanceHNRUSD({ history }: RouteComponentProps) {
+export default function FinanceBNB({ history }: RouteComponentProps) {
  
   const [isDeposit,setIsDeposit] = useState(false);
 
@@ -41,13 +41,13 @@ export default function FinanceHNRUSD({ history }: RouteComponentProps) {
   // const { t } = useTranslation()
 
   const finance=useFinanceHonorContract();
-  const busdToken=testnetTokens.busd;
+  const wbnbToken=testnetTokens.hnrusd;
 
-  const busdBalance=useCurrencyBalance(account,busdToken);
+  const wbnbBalance=useCurrencyBalance(account,wbnbToken);
 
-  const {onDeposit}= useDepositFinanceToken(busdToken.address);
+  const {onDeposit}= useDepositFinanceToken(wbnbToken.address);
 
-  const balance : FinanceBalance=useFinanceGetBalance(account,busdToken.address);
+  const balance : FinanceBalance=useFinanceGetBalance(account,wbnbToken.address);
 
   
   
@@ -69,8 +69,8 @@ export default function FinanceHNRUSD({ history }: RouteComponentProps) {
     <Flex padding="1" margin="1" flexDirection="row" justifyContent="space-between">
     
       <DepositFinance 
-        token={busdToken} 
-        balance={busdBalance?.toFixed(2)}
+        token={wbnbToken} 
+        balance={wbnbBalance?.toFixed(2)}
         sendDeposit={onDeposit}
       
         duration={selectDuration}
@@ -82,7 +82,7 @@ export default function FinanceHNRUSD({ history }: RouteComponentProps) {
 
   const curDepositRender = () => {
     return (
-<CurrentDeposited user={account} token={busdToken} contract={finance}/>
+<CurrentDeposited user={account} token={wbnbToken} contract={finance}/>
     
     )
   }
@@ -93,7 +93,7 @@ export default function FinanceHNRUSD({ history }: RouteComponentProps) {
       
         { isDeposit ? curDepositRender() :  <div>&nbsp;</div> }
         <br/>
-        <FinanceTable token={busdToken.address} symbol={busdToken.symbol} />
+        <FinanceTable token={wbnbToken.address} symbol={wbnbToken.symbol} />
         <br/>
         { !isDeposit ? depositRender() : <div>&nbsp;</div> }
     

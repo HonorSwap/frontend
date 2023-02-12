@@ -34,9 +34,6 @@ import FinanceUtil from './financeUtils';
     const maxUser=new BigNumber(info.maxAmountPerUser.toString()).dividedBy(new BigNumber(10).pow(18)).toNumber()
     const tokenInterest=new BigNumber(info.interest.toString());
 
-    
-
-  
 
     return (
     
