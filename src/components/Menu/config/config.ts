@@ -21,6 +21,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('Trade HNRUSD'),
         href: '/tradehnrusd',
+        
       },
     ],
   },

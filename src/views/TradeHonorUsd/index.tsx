@@ -11,30 +11,19 @@ import { MaxUint256 } from '@ethersproject/constants'
 import { useERC20, useTradeHNRUSDContract } from 'hooks/useContract'
 import BigNumber from 'bignumber.js'
 import { useCurrencyBalance } from 'state/wallet/hooks'
-import { RouteComponentProps } from 'react-router-dom'
+import { BrowserRouter, RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import { AppBody, AppHeader } from 'components/App'
 import { AutoColumn, ColumnCenter } from 'components/Layout/Column'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { CurrencyAmount, JSBI, Token, TokenAmount, Trade } from '@honorswap/sdk'
-import { Button, Text, ArrowDownIcon, Box, useModal,Flex, AddIcon, Card, CardBody, CardHeader } from '@honorswap/uiswap'
+import { Button, Text, ArrowDownIcon, Box, useModal,Flex, AddIcon, Card, CardBody, CardHeader, SubMenuItems } from '@honorswap/uiswap'
 import  Page  from '../../components/Layout/Page'
 import ApprovalButton from "../Finance/components/ApprovalButton";
 import tokens, {testnetTokens} from '../../config/constants/tokens'
 import USDBalanceTable from './components/USDBalanceTable'
 import HNRUSDFeeTable from './components/HNRUSDFeeTable'
-
-
-
-
-
-
-
-
-
-
-
-
+import SubMenuUSD from './components/SubMenuUSD'
 
 
 
@@ -124,6 +113,8 @@ export default function TradeHonorUsd({ history }: RouteComponentProps) {
 
   return (
     <Page>
+      <SubMenuUSD item="/tradehnrusdbusd" />
+      <div>&nbsp;</div>
       <Card style={{width:'100%', marginRight:'5px'}} >
         <CardHeader>
 

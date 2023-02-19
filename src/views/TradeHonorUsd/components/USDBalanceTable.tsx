@@ -12,11 +12,13 @@ import {testnetTokens} from '../../../config/constants/tokens'
 
 
 
-export default function USDBalanceTable () {
+export default function USDBalanceTable (props) {
+
+    const {token}=props;
 
     const tradeHNRUSD=useTradeHNRUSDContract();
 
-    const busdBalance=useTokenBalance(tradeHNRUSD.address,testnetTokens.busd);
+    const busdBalance=useTokenBalance(tradeHNRUSD.address,token);
     const husdBalance=useTokenBalance(tradeHNRUSD.address,testnetTokens.hnrusd);
 
 
@@ -28,7 +30,7 @@ export default function USDBalanceTable () {
         <CardBody>
           <Table>
             <tr>
-          <Th textAlign="left">BUSD Stock</Th><Td textAlign="right">{busdBalance?.toFixed(2)}</Td>
+          <Th textAlign="left">{token?.symbol} Stock</Th><Td textAlign="right">{busdBalance?.toFixed(2)}</Td>
           <Th textAlign="left">HNRUSD Stock</Th><Td textAlign="right">{husdBalance?.toFixed(2)}</Td>
           </tr>
           </Table>

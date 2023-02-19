@@ -16,7 +16,9 @@ import PageLoader from './components/Loader/PageLoader'
 import EasterEgg from './components/EasterEgg'
 import history from './routerHistory'
 // Views included in the main bundle
-import TradeHonorUsd from './views/TradeHonorUsd'
+import TradeHNRBUSD from './views/TradeHonorUsd/TradeHNRBUSD'
+import TradeHNRUSDT from './views/TradeHonorUsd/TradeHNRUSDT'
+import TradeHNRUSDC from './views/TradeHonorUsd/TradeHNRUSDC'
 import FinanceBUSD from './views/FinanceBUSD'
 import FinanceBNB from './views/FinanceBNB'
 import FinanceHNRUSD from './views/FinanceHNRUSD'
@@ -138,7 +140,10 @@ const App: React.FC = () => {
             <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
             <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
             <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
-            <Route exact strict path="/tradehnrusd" component={TradeHonorUsd} />
+            <Route exact strict path="/tradehnrusd" component={TradeHNRBUSD} />
+            <Route exact strict path="/tradehnrusdbusd" component={TradeHNRBUSD} />
+            <Route exact strict path="/tradehnrusdusdt" component={TradeHNRUSDT} />
+            <Route exact strict path="/tradehnrusdusdc" component={TradeHNRUSDC} />
             <Route exact strict path="/financebusd" component={FinanceBUSD} />
             <Route exact strict path="/financebnb" component={FinanceBNB} />
             <Route exact strict path="/bnbfinance" component={FinanceBNB} />
