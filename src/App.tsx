@@ -20,6 +20,7 @@ import TradeHNRBUSD from './views/TradeHonorUsd/TradeHNRBUSD'
 import TradeHNRUSDT from './views/TradeHonorUsd/TradeHNRUSDT'
 import TradeHNRUSDC from './views/TradeHonorUsd/TradeHNRUSDC'
 import FinanceBUSD from './views/FinanceBUSD'
+import FinanceHonor from './views/FinanceHonor'
 import FinanceBNB from './views/FinanceBNB'
 import FinanceHNRUSD from './views/FinanceHNRUSD'
 import Pools from './views/Pools'
@@ -146,6 +147,8 @@ const App: React.FC = () => {
             <Route exact strict path="/tradehnrusdusdc" component={TradeHNRUSDC} />
             <Route exact strict path="/financebusd" component={FinanceBUSD} />
             <Route exact strict path="/financebnb" component={FinanceBNB} />
+            <Route exact strict path="/financehonor" component={FinanceHonor} />
+            <Route exact strict path="/honorfinance" component={FinanceHonor} />
             <Route exact strict path="/bnbfinance" component={FinanceBNB} />
             <Route exact strict path="/financehnrusd" component={FinanceHNRUSD} />
             <Route exact strict path="/financecalc" component={FinanceCalc} />

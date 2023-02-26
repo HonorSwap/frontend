@@ -23,3 +23,24 @@ export const useFinanceGetBalance = (account: string,token:string) => {
 
     return balance;
 }
+
+export const useFinanceHonorGetBalance = (account: string) => {
+    
+    const finance=useFinanceHonorContract();
+    const [balance,setBalance] = useState(undefined);
+    
+    useEffect(  () => {
+        const checkFinance=async () => {
+        const bal=await finance._userHonorBalances(account);
+       
+        setBalance(bal);
+        }
+    
+        checkFinance();
+
+       
+
+    },[finance,account])
+
+    return balance;
+}
