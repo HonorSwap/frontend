@@ -27,7 +27,7 @@ import { useFinanceTokenInfo } from '../Finance/hooks/useFinanceTokenInfo'
 import FinanceTable from '../Finance/FinanceTable'
 import DepositFinance from '../Finance/components/DepositFinance'
 import { useDepositFinanceToken } from '../Finance/hooks/useFinanceDepositToken'
-import { useFinanceHonorGetBalance } from '../Finance/hooks/useFinanceGetBalance'
+import { useFinanceGetBalance, useFinanceHonorGetBalance } from '../Finance/hooks/useFinanceGetBalance'
 
 
 
@@ -47,7 +47,7 @@ export default function FinanceHonor({ history }: RouteComponentProps) {
 
   const {onDeposit}= useDepositFinanceToken(wbnbToken.address);
 
-  const balance : FinanceBalance=useFinanceHonorGetBalance(account);
+  const balance : FinanceBalance=useFinanceGetBalance(wbnbToken.address,account);
 
   // FinanceHonor Contractında userhonorbalance mapping i public ayarlanmadığı için
   // hata alıyoruz kontratı tekrar yüklememiz gerekiyor
